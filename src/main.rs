@@ -1,15 +1,17 @@
+use std::env;
+
 mod bencoding;
 
-use bencoding::{bencode_decode, BencodingValue};
+use bencoding::bencode_decode;
 
 fn main() {
-    println!("Test input 0:");
+    let args: Vec<String> = env::args().collect();
 
-    let val = bencode_decode("0:");
+    if args.len() == 1 {
+        println!("You didn't give me anything to decode.");
+    } else {
+        let (val, _) = bencode_decode(&args[1]);
 
-    if let BencodingValue::String(s) = val {
-        println!("Value is string: {s}");
-    } else if let BencodingValue::Integer(i) = val {
-        println!("Value is integer: {i}");
+        println!("Decoded value: {:?}", val);
     }
 }
